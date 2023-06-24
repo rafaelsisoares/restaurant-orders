@@ -29,13 +29,19 @@ class InventoryMapping:
     def check_recipe_availability(self, recipe: Recipe):
         ingredient = list(recipe.keys())[0]
         amount = list(recipe.values())[0]
-        print(type(amount))
         if (
             ingredient in self.inventory.keys()
             and self.inventory[ingredient] >= amount
         ):
             return True
         return False
+
     # Req 5.2
     def consume_recipe(self, recipe: Recipe) -> None:
-        pass
+        if recipe.keys():
+            if not self.check_recipe_availability(recipe):
+                raise ValueError("Recipe not available")
+            ingredients = list(recipe.keys())
+            amount = list(recipe.values())
+            for i in range(len(ingredients)):
+                self.inventory[ingredients[i]] -= amount[i]
